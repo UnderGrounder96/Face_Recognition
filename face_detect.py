@@ -25,8 +25,7 @@ def main():
     print("No arguments provided! Exiting...")
     return 1
 
-  cascade_path = "haarcascade_frontalface_default.xml"
-  cascade = cv.CascadeClassifier(cascade_path)
+  cascade = cv.CascadeClassifier("haarcascade_frontalface_default.xml")
 
   for i in range(1,args_len):
     image = cv.imread(sys.argv[i])
@@ -40,8 +39,11 @@ def main():
 
     print("Image #{0} - has {1} face(s)!".format(i, len(detections)))
     print()
+
     cv.imshow("Objects found", image)
     cv.waitKey(3000)
+
+  return 0
 
 if __name__ == "__main__":
   sys.exit(main())
