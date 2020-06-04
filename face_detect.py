@@ -3,7 +3,8 @@ import cv2 as cv
 
 # Refactored https://realpython.com/face-recognition-with-python/
 
-def cascade_detect(cascade, image):
+def cascade_detect(image, cascade):
+  """Convert image to gray then detect faces"""
   gray_image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
   return cascade.detectMultiScale(
     gray_image,
@@ -13,12 +14,14 @@ def cascade_detect(cascade, image):
     flags = cv.CASCADE_SCALE_IMAGE
   )
 
-def detections_draw(image, detections):
-  for (x, y, w, h) in detections:
+def detections_draw(image, faces):
+  """Draw a rectangle around the faces"""
+  for (x, y, w, h) in faces:
     print("({0}, {1}, {2}, {3})".format(x, y, w, h))
     cv.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
 def main():
+  """Core function program"""
   args_len = len(sys.argv)
 
   if not args_len > 1:
@@ -34,14 +37,22 @@ def main():
       print("Error loading image #{0}! Exiting...".format(i))
       return 2
 
-    detections = cascade_detect(cascade, image)
-    detections_draw(image, detections)
+    faces = cascade_detect(image, cascade)
+    detections_draw(image, faces)
 
-    print("Image #{0} - has {1} face(s)!".format(i, len(detections)))
+    print()
+    print("Image #{0} - has {1} face(s)!".format(i, len(faces)))
     print()
 
-    cv.imshow("Objects found", image)
-    cv.waitKey(3000)
+    # Display the resulting image
+    cv.imshow("Image Window", image)
+
+    # Quit program on 'q' key press, otherwise show next image
+    if cv.waitKey(5000) & 0xFF == ord('q'):
+      break
+
+  # Once completed release window
+  cv.destroyAllWindows()
 
   return 0
 
