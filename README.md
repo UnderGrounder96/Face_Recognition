@@ -22,6 +22,6 @@ If no errors were found:
 
 # Deployment
 
-```$ python face_detect.py abba.png small.jpg singer.jpg```
+```$ python3 face_detect.py abba.png small.jpg singer.jpg```
 
 [Image #3 - has 1 face(s)]
